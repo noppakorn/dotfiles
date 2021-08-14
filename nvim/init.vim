@@ -6,7 +6,6 @@ call plug#begin('~/.config/nvim/plugged')
  Plug 'tpope/vim-fugitive'
  Plug 'preservim/nerdtree'
  Plug 'wincent/terminus'
- Plug 'sheerun/vim-polyglot'
  Plug 'tpope/vim-dispatch'
  "Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
