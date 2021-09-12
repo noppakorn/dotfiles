@@ -10,6 +10,8 @@ call plug#begin('~/.vim/plugged')
  Plug 'sheerun/vim-polyglot'
  "Plug 'neoclide/coc.nvim', {'branch': 'release'}
  Plug 'sainnhe/sonokai'
+ Plug 'tpope/vim-sleuth'
+ Plug 'ap/vim-css-color'
 call plug#end()
 
 let g:sonokai_style = 'shusia'
@@ -43,11 +45,14 @@ set wrap "Wrap lines
 
 set cursorline
 set hlsearch
+set list
 
 " Compile current file with appropriate compiler
-autocmd vimEnter *.c map <F8> :w <CR> :!clear ; gcc %; if [ -f a.out ]; time ./a.out; rm a.out; end <CR>
-autocmd vimEnter *.cpp map <F8> :w <CR> :!clear ; g++ --std=c++11 %; if [ -f a.out ]; time ./a.out; rm a.out; end <CR>
-autocmd vimEnter *.rs map <F8> :w <CR> :!clear ; rustc %; if [ -f %:r ]; time ./%:r; rm ./%:r; end <CR>
-autocmd vimEnter *.py map <F8> :w <CR> :!clear ; time python %; <CR>
+autocmd vimEnter *.c map <F5> :w <CR> :!clear ; gcc %; if [ -f a.out ]; then time ./a.out; rm a.out; fi <CR>
+autocmd vimEnter *.cpp map <F5> :w <CR> :!clear ; g++ --std=c++11 -Wall -Wshadow %; if [ -f a.out ]; then time ./a.out; rm a.out; fi <CR>
+autocmd vimEnter *.rs map <F5> :w <CR> :!clear ; rustc %; if [ -f %:r ]; then time ./%:r; rm ./%:r; fi <CR>
+autocmd vimEnter *.py map <F5> :w <CR> :!clear ; time python %; <CR>
 
-let &t_ut=''
+" Fix color for alacritty terminal
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
