@@ -39,8 +39,6 @@ set tabstop=4
 set ai "Auto indent
 set si "Smart indent
 
-set lbr
-set tw=500
 set wrap "Wrap lines
 
 set cursorline
