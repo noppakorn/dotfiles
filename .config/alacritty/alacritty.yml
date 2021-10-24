@@ -313,31 +313,87 @@ font:
   #
   #indexed_colors: []
 
-colors:
-  primary:
-    background: "0x2d2a2e"
-    foreground: "0xe3e1e4"
+schemes:
+  sonokai: &sonokai
+    primary:
+      background: "#2d2a2e"
+      foreground: "#e3e1e4"
 
-  normal:
-    black: "0x1a181a"
-    red: "0xf85e84"
-    green: "0x9ecd6f"
-    yellow: "0xe5c463"
-    blue: "0x7accd7"
-    magenta: "0xab9df2"
-    cyan: "0xef9062"
-    white: "0xe3e1e4"
+    normal:
+      black: "#1a181a"
+      red: "#f85e84"
+      green: "#9ecd6f"
+      yellow: "#e5c463"
+      blue: "#7accd7"
+      magenta: "#ab9df2"
+      cyan: "#ef9062"
+      white: "#e3e1e4"
 
-  bright:
-    black: "0x1a181a"
-    red: "0xf85e84"
-    green: "0x9ecd6f"
-    yellow: "0xe5c463"
-    blue: "0x7accd7"
-    magenta: "0xab9df2"
-    cyan: "0xef9062"
-    white: "0xe3e1e4"
+    bright:
+      black: "#1a181a"
+      red: "#f85e84"
+      green: "#9ecd6f"
+      yellow: "#e5c463"
+      blue: "#7accd7"
+      magenta: "#ab9df2"
+      cyan: "#ef9062"
+      white: "#e3e1e4"
 
+  strawberry: &strawberry
+    primary:
+      background: '#fff0f7'
+      foreground: '#d46a84'
+    normal:
+      black: '#2b1d24'
+      red: '#f55050'
+      green: "#9ecd6f"
+      yellow: '#d4ac35'
+      blue: '#468dd4'
+      magenta: '#a26fbf'
+      cyan: '#1b9e9e'
+      white: '#fff0f7'
+    bright:
+      black: '#2b1d24'
+      red: '#f55050'
+      green: "#9ecd6f"
+      yellow: '#d4ac35'
+      blue: '#468dd4'
+      magenta: '#a26fbf'
+      cyan: '#1b9e9e'
+      white: '#fff0f7'
+  tokyonight_night: &tokyonight_night
+    # Default colors
+    primary:
+      background: '#1a1b26'
+      foreground: '#c0caf5'
+
+    # Normal colors
+    normal:
+      black:   '#15161e'
+      red:     '#f7768e'
+      green:   '#9ece6a'
+      yellow:  '#e0af68'
+      blue:    '#7aa2f7'
+      magenta: '#bb9af7'
+      cyan:    '#7dcfff'
+      white:   '#a9b1d6'
+
+    # bright colors
+    bright:
+      black:   '#414868'
+      red:     '#f7768e'
+      green:   '#9ece6a'
+      yellow:  '#e0af68'
+      blue:    '#7aa2f7'
+      magenta: '#bb9af7'
+      cyan:    '#7dcfff'
+      white:   '#c0caf5'
+
+    indexed_colors:
+      - { index: 16, color: '0xff9e64' }
+      - { index: 17, color: '0xdb4b4b' }
+
+colors: *tokyonight_night
 # Bell
 #
 # The bell is rung every time the BEL control character is received.
