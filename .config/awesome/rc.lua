@@ -50,7 +50,24 @@ beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 -- Custom Config
 beautiful.useless_gap = 5
 beautiful.font = "JetBrains Mono NL 13"
-beautiful.border_width = 4
+beautiful.border_width = 3
+
+function move_mouse_onto_focused_client()
+    local c = client.focus 
+    gears.timer( {  timeout = 0.1,
+                autostart = true,
+                single_shot = true,
+                callback =  function()
+                    if mouse.object_under_pointer() ~= c then
+                        local geometry = c:geometry()
+                        local x = geometry.x + geometry.width/2
+                        local y = geometry.y + geometry.height/2
+                        mouse.coords({x = x, y = y}, true)
+                    end
+                end } )
+end
+client.connect_signal("focus", move_mouse_onto_focused_client)
+client.connect_signal("swapped", move_mouse_onto_focused_client)
 
 -- This is used later as the default terminal and editor to run.
 terminal = "alacritty"
@@ -112,7 +129,7 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+mytextclock = wibox.widget.textclock("%a %F %H:%M:%S", 0.5)
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
