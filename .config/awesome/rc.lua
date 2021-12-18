@@ -46,11 +46,19 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+-- beautiful.init("~/.config/awesome/themes/default/theme.lua")
+-- for s = 1, screen.count() do
+-- 	gears.wallpaper.maximized(beautiful.wallpaper, s, true)
+-- end
 
 -- Custom Config
 beautiful.useless_gap = 5
 beautiful.font = "JetBrains Mono NL 13"
 beautiful.border_width = 3
+naughty.config.defaults['icon_size'] = 100
+browser = "firefox"
+file_manager = "pcmanfm-qt"
+
 
 function move_mouse_onto_focused_client()
     local c = client.focus 
@@ -66,8 +74,8 @@ function move_mouse_onto_focused_client()
                     end
                 end } )
 end
-client.connect_signal("focus", move_mouse_onto_focused_client)
-client.connect_signal("swapped", move_mouse_onto_focused_client)
+--client.connect_signal("focus", move_mouse_onto_focused_client)
+--client.connect_signal("swapped", move_mouse_onto_focused_client)
 
 -- This is used later as the default terminal and editor to run.
 terminal = "alacritty"
@@ -221,6 +229,28 @@ awful.screen.connect_for_each_screen(function(s)
     s.mywibox = awful.wibar({ position = "top", screen = s, height = 30 })
 
     -- Add widgets to the wibox
+    local battery_widget = require("battery-widget")
+    local BAT0 = battery_widget {
+        ac = "AC",
+        adapter = "BAT0",
+        ac_prefix = "AC: ",
+        percent_colors = {
+            { 25, "red"   },
+            { 50, "orange"},
+            {999, "green" },
+        },
+        listen = true,
+        timeout = 10,
+        widget_text = "${AC_BAT}${color_on}${percent}%${color_off}",
+        widget_font = "JetBrains Mono NL 13",
+        tooltip_text = "Battery ${state}${time_est}\nCapacity: ${capacity_percent}%",
+        alert_threshold = 5,
+        alert_timeout = 0,
+        alert_title = "Low battery !",
+        alert_text = "${AC_BAT}${time_est}"
+    }
+    local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
+    local separator = wibox.widget.textbox("|")
     s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
         { -- Left widgets
@@ -232,9 +262,17 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            mykeyboardlayout,
+            separator,
+            volume_widget(),
+            separator,
+            BAT0,
+            separator,
             wibox.widget.systray(),
+            separator,
             mytextclock,
+            separator,
+            mykeyboardlayout,
+            separator,
             s.mylayoutbox,
         },
     }
@@ -243,9 +281,9 @@ end)
 
 -- {{{ Mouse bindings
 root.buttons(gears.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
-    awful.button({ }, 4, awful.tag.viewnext),
-    awful.button({ }, 5, awful.tag.viewprev)
+    awful.button({ }, 3, function () mymainmenu:toggle() end)
+    -- awful.button({ }, 4, awful.tag.viewnext),
+    -- awful.button({ }, 5, awful.tag.viewprev)
 ))
 -- }}}
 
@@ -272,8 +310,8 @@ globalkeys = gears.table.join(
         end,
         {description = "focus previous by index", group = "client"}
     ),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
-              {description = "show main menu", group = "awesome"}),
+    -- awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
+    --           {description = "show main menu", group = "awesome"}),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
@@ -298,6 +336,10 @@ globalkeys = gears.table.join(
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
+    awful.key({ modkey,           }, "w", function () awful.spawn(browser) end,
+              {description = "open a browser", group = "launcher"}),
+    awful.key({ modkey,           }, "i", function () awful.spawn(file_manager) end,
+              {description = "open a file manager", group = "launcher"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit,
@@ -333,8 +375,9 @@ globalkeys = gears.table.join(
               {description = "restore minimized", group = "client"}),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
-              {description = "run prompt", group = "launcher"}),
+    -- awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
+    --           {description = "run prompt", group = "launcher"}),
+    awful.key({ modkey },            "r",     function () awful.spawn("rofi -modi run -show run -theme Arc-Dark") end),
 
     awful.key({ modkey }, "x",
               function ()
@@ -347,8 +390,20 @@ globalkeys = gears.table.join(
               end,
               {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"})
+    -- awful.key({ modkey }, "p", function() menubar.show() end,
+    --          {description = "show the menubar", group = "launcher"}),
+    awful.key({ modkey },            "p",     function () awful.spawn("rofi -modi drun,run -show drun -theme Arc-Dark") end),
+
+    awful.key({}, "XF86AudioRaiseVolume", function() awful.spawn("amixer -q -D pulse sset Master 1%+") end),
+    awful.key({}, "XF86AudioLowerVolume", function() awful.spawn("amixer -q -D pulse sset Master 1%-") end),
+    awful.key({}, "XF86AudioMute", function() awful.spawn("amixer -q -D pulse sset Master toggle") end),
+    awful.key({}, "XF86MonBrightnessUp", function() awful.spawn("light -rs sysfs/backlight/amdgpu_bl0 -A 5") end),
+    awful.key({}, "XF86MonBrightnessDown", function() awful.spawn("light -rs sysfs/backlight/amdgpu_bl0 -U 5") end),
+    awful.key({}, "XF86KbdBrightnessUp", function() awful.spawn("light -rs sysfs/leds/asus::kbd_backlight -A 1") end),
+    awful.key({}, "XF86KbdBrightnessDown", function() awful.spawn("light -rs sysfs/leds/asus::kbd_backlight -U 1") end),
+    awful.key({}, "XF86AudioPause", function() awful.spawn("playerctl --all-players play-pause") end),
+    awful.key({}, "Print", function() awful.spawn("spectacle") end)
+
 )
 
 clientkeys = gears.table.join(
@@ -587,15 +642,4 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 
 -- Autostart
-awful.spawn.with_shell("xset -dpms s off")
-awful.spawn.with_shell("setxkbmap -model pc105 -layout us,th -option grp:win_space_toggle -option caps:escape")
-awful.spawn.with_shell("lxqt-policykit-agent")
-awful.spawn.with_shell("picom --experimental-backends --no-fading-openclose")
-awful.spawn.with_shell("dunst")
-awful.spawn.with_shell("i3-battery-popup -n -L 20 -t 1m -s /usr/share/sounds/gnome/default/alerts/bark.ogg")
-awful.spawn.with_shell("parcellite")
-awful.spawn.with_shell("export PATH=~/.local/share/gem/ruby/3.0.0/bin:~/.local/bin/statusbar:$PATH")
-awful.spawn.with_shell("~/.local/share/gem/ruby/3.0.0/bin/fusuma --config /home/noppakorn/.config/fusuma/config.yml -d")
-awful.spawn.with_shell("sleep 5 && /home/noppakorn/map_touchscreen.sh")
-awful.spawn.with_shell("autorandr --change && feh --bg-fill /home/noppakorn/Pictures/beautiful-morning-minimal-4k-if.jpg")
-awful.spawn.with_shell("nm-applet")
+awful.spawn.with_shell("~/.config/autostart/autostart.sh", false)
