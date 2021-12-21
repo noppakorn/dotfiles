@@ -380,7 +380,7 @@ globalkeys = gears.table.join(
     awful.key({}, "XF86KbdBrightnessUp", function() awful.spawn("light -rs sysfs/leds/asus::kbd_backlight -A 1") end),
     awful.key({}, "XF86KbdBrightnessDown", function() awful.spawn("light -rs sysfs/leds/asus::kbd_backlight -U 1") end),
     awful.key({}, "XF86AudioPause", function() awful.spawn("playerctl --all-players play-pause") end),
-    awful.key({}, "Print", function() awful.spawn("flameshot screen -c -p /home/noppakorn/Pictures") end),
+    awful.key({}, "Print", function() awful.spawn("flameshot screen -c -p /home/noppakorn/Pictures/Screenshots") end),
     awful.key({ modkey }, "Print", function() awful.spawn("flameshot gui") end)
 
 )
