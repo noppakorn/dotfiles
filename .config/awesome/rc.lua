@@ -45,41 +45,19 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
--- beautiful.init("~/.config/awesome/themes/default/theme.lua")
+-- beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 -- for s = 1, screen.count() do
 -- 	gears.wallpaper.maximized(beautiful.wallpaper, s, true)
 -- end
 
 -- Custom Config
-beautiful.useless_gap = 5
-beautiful.font = "JetBrains Mono NL 13"
-beautiful.border_width = 3
 naughty.config.defaults['icon_size'] = 100
-browser = "firefox"
+
+browser = "brave"
 file_manager = "pcmanfm-qt"
-
-
-function move_mouse_onto_focused_client()
-    local c = client.focus 
-    gears.timer( {  timeout = 0.1,
-                autostart = true,
-                single_shot = true,
-                callback =  function()
-                    if mouse.object_under_pointer() ~= c then
-                        local geometry = c:geometry()
-                        local x = geometry.x + geometry.width/2
-                        local y = geometry.y + geometry.height/2
-                        mouse.coords({x = x, y = y}, true)
-                    end
-                end } )
-end
---client.connect_signal("focus", move_mouse_onto_focused_client)
---client.connect_signal("swapped", move_mouse_onto_focused_client)
-
--- This is used later as the default terminal and editor to run.
 terminal = "alacritty"
-editor = os.getenv("EDITOR") or "nano"
+editor = "nvim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -644,3 +622,4 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 -- Autostart
 awful.spawn.with_shell("~/.config/autostart/autostart.sh", false)
+awful.spawn.with_shell("nm-applet", false)
