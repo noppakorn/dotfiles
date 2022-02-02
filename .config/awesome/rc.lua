@@ -43,9 +43,6 @@ do
 end
 -- }}}
 
--- {{{ Variable definitions
--- Themes define colours, icons, font and wallpapers.
--- beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 -- for s = 1, screen.count() do
 -- 	gears.wallpaper.maximized(beautiful.wallpaper, s, true)
@@ -54,7 +51,7 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 -- Custom Config
 naughty.config.defaults['icon_size'] = 100
 
-browser = "brave"
+browser = "firefox"
 file_manager = "pcmanfm-qt"
 terminal = "alacritty"
 editor = "nvim"
@@ -178,6 +175,8 @@ awful.screen.connect_for_each_screen(function(s)
 
     -- Each screen has its own tag table.
     awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
+    -- awful.tag({ " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 " }, s, awful.layout.layouts[1])
+    -- awful.tag({ "main", "www", "code", "term", "5", "6", "7", "meet", "lterm" }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -228,6 +227,7 @@ awful.screen.connect_for_each_screen(function(s)
         alert_text = "${AC_BAT}${time_est}"
     }
     local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
+    local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
     local separator = wibox.widget.textbox("|")
     s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
@@ -244,6 +244,7 @@ awful.screen.connect_for_each_screen(function(s)
             volume_widget(),
             separator,
             BAT0,
+            -- battery_widget(),
             separator,
             wibox.widget.systray(),
             separator,
@@ -372,16 +373,16 @@ globalkeys = gears.table.join(
     --          {description = "show the menubar", group = "launcher"}),
     awful.key({ modkey },            "p",     function () awful.spawn("rofi -modi drun,run -show drun -theme Arc-Dark") end),
 
-    awful.key({}, "XF86AudioRaiseVolume", function() awful.spawn("amixer -q -D pulse sset Master 1%+") end),
-    awful.key({}, "XF86AudioLowerVolume", function() awful.spawn("amixer -q -D pulse sset Master 1%-") end),
-    awful.key({}, "XF86AudioMute", function() awful.spawn("amixer -q -D pulse sset Master toggle") end),
-    awful.key({}, "XF86MonBrightnessUp", function() awful.spawn("light -rs sysfs/backlight/amdgpu_bl0 -A 5") end),
-    awful.key({}, "XF86MonBrightnessDown", function() awful.spawn("light -rs sysfs/backlight/amdgpu_bl0 -U 5") end),
-    awful.key({}, "XF86KbdBrightnessUp", function() awful.spawn("light -rs sysfs/leds/asus::kbd_backlight -A 1") end),
-    awful.key({}, "XF86KbdBrightnessDown", function() awful.spawn("light -rs sysfs/leds/asus::kbd_backlight -U 1") end),
-    awful.key({}, "XF86AudioPause", function() awful.spawn("playerctl --all-players play-pause") end),
-    awful.key({}, "Print", function() awful.spawn("flameshot screen -c -p /home/noppakorn/Pictures/Screenshots") end),
-    awful.key({ modkey }, "Print", function() awful.spawn("flameshot gui") end)
+    awful.key({}, "XF86AudioRaiseVolume", function() awful.spawn("amixer -q -D pulse sset Master 1%+", false) end),
+    awful.key({}, "XF86AudioLowerVolume", function() awful.spawn("amixer -q -D pulse sset Master 1%-", false) end),
+    awful.key({}, "XF86AudioMute", function() awful.spawn("amixer -q -D pulse sset Master toggle", false) end),
+    awful.key({}, "XF86MonBrightnessUp", function() awful.spawn("light -rs sysfs/backlight/amdgpu_bl0 -A 5", false) end),
+    awful.key({}, "XF86MonBrightnessDown", function() awful.spawn("light -rs sysfs/backlight/amdgpu_bl0 -U 5", false) end),
+    awful.key({}, "XF86KbdBrightnessUp", function() awful.spawn("light -rs sysfs/leds/asus::kbd_backlight -A 1", false) end),
+    awful.key({}, "XF86KbdBrightnessDown", function() awful.spawn("light -rs sysfs/leds/asus::kbd_backlight -U 1", false) end),
+    awful.key({}, "XF86AudioPause", function() awful.spawn("playerctl --all-players play-pause", false) end),
+    awful.key({ modkey }, "u", function() awful.spawn("flameshot screen -c -p /home/noppakorn/Pictures/Screenshots", false) end),
+    awful.key({ modkey, "Shift" }, "u", function() awful.spawn("/usr/bin/flameshot gui", false) end)
 
 )
 
@@ -394,7 +395,7 @@ clientkeys = gears.table.join(
         {description = "toggle fullscreen", group = "client"}),
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end,
               {description = "close", group = "client"}),
-    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ,
+    awful.key({ modkey, "Shift" }, "f",  awful.client.floating.toggle                     ,
               {description = "toggle floating", group = "client"}),
     awful.key({ modkey, "Shift" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
               {description = "move to master", group = "client"}),
@@ -426,7 +427,8 @@ clientkeys = gears.table.join(
             c.maximized_horizontal = not c.maximized_horizontal
             c:raise()
         end ,
-        {description = "(un)maximize horizontally", group = "client"})
+        {description = "(un)maximize horizontally", group = "client"}),
+    awful.key({ modkey, "Shift" }, "s", function(c) c.sticky = not c.sticky end)
 )
 
 -- Bind all key numbers to tags.
