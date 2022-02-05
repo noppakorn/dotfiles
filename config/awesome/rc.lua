@@ -14,6 +14,8 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
+-- Volume widget
+local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -208,12 +210,13 @@ awful.screen.connect_for_each_screen(function(s)
     -- Add widgets to the wibox
     local battery_widget = require("battery-widget")
     local BAT0 = battery_widget {
-        ac = "AC",
+        ac = "AC0",
         adapter = "BAT0",
-        ac_prefix = "AC: ",
+        ac_prefix = "🔌 ",
+        battery_prefix = "🔋 ",
         percent_colors = {
-            { 25, "red"   },
-            { 50, "orange"},
+            { 20, "red"   },
+            { 30, "orange"},
             {999, "green" },
         },
         listen = true,
@@ -221,19 +224,16 @@ awful.screen.connect_for_each_screen(function(s)
         widget_text = "${AC_BAT}${color_on}${percent}%${color_off}",
         widget_font = "JetBrains Mono NL 13",
         tooltip_text = "Battery ${state}${time_est}\nCapacity: ${capacity_percent}%",
-        alert_threshold = 5,
-        alert_timeout = 0,
-        alert_title = "Low battery !",
+        alert_threshold = 20,
+        alert_timeout = 5,
+        alert_title = "Low battery!",
         alert_text = "${AC_BAT}${time_est}"
     }
-    local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
-    local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
-    local separator = wibox.widget.textbox("|")
+    local separator = wibox.widget.textbox(" ")
     s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
-            -- mylauncher,
             s.mytaglist,
             s.mypromptbox,
         },
@@ -241,10 +241,9 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             separator,
-            volume_widget(),
+            volume_widget({refresh_rate=0.1}),
             separator,
             BAT0,
-            -- battery_widget(),
             separator,
             wibox.widget.systray(),
             separator,
@@ -373,14 +372,17 @@ globalkeys = gears.table.join(
     --          {description = "show the menubar", group = "launcher"}),
     awful.key({ modkey },            "p",     function () awful.spawn("rofi -modi drun,run -show drun -theme Arc-Dark") end),
 
-    awful.key({}, "XF86AudioRaiseVolume", function() awful.spawn("amixer -q -D pulse sset Master 1%+", false) end),
-    awful.key({}, "XF86AudioLowerVolume", function() awful.spawn("amixer -q -D pulse sset Master 1%-", false) end),
-    awful.key({}, "XF86AudioMute", function() awful.spawn("amixer -q -D pulse sset Master toggle", false) end),
+    awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc(1) end),
+    awful.key({}, "XF86AudioLowerVolume", function() volume_widget:dec(1) end),
+    awful.key({}, "XF86AudioMute", function() volume_widget:toggle() end),
+    awful.key({}, "XF86AudioPause", function() awful.spawn("playerctl --all-players play-pause", false) end),
+    awful.key({}, "XF86AudioPlay", function() awful.spawn("playerctl --all-players play-pause", false) end),
+
     awful.key({}, "XF86MonBrightnessUp", function() awful.spawn("light -rs sysfs/backlight/amdgpu_bl0 -A 5", false) end),
     awful.key({}, "XF86MonBrightnessDown", function() awful.spawn("light -rs sysfs/backlight/amdgpu_bl0 -U 5", false) end),
     awful.key({}, "XF86KbdBrightnessUp", function() awful.spawn("light -rs sysfs/leds/asus::kbd_backlight -A 1", false) end),
     awful.key({}, "XF86KbdBrightnessDown", function() awful.spawn("light -rs sysfs/leds/asus::kbd_backlight -U 1", false) end),
-    awful.key({}, "XF86AudioPause", function() awful.spawn("playerctl --all-players play-pause", false) end),
+
     awful.key({ modkey }, "u", function() awful.spawn("flameshot screen -c -p /home/noppakorn/Pictures/Screenshots", false) end),
     awful.key({ modkey, "Shift" }, "u", function() awful.spawn("/usr/bin/flameshot gui", false) end)
 
