@@ -46,12 +46,10 @@ end
 -- }}}
 
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
--- for s = 1, screen.count() do
--- 	gears.wallpaper.maximized(beautiful.wallpaper, s, true)
--- end
 
 -- Custom Config
 naughty.config.defaults['icon_size'] = 100
+awesome.set_preferred_icon_size(32)
 
 browser = "firefox"
 file_manager = "pcmanfm-qt"

@@ -4,7 +4,7 @@ local dpi = xresources.apply_dpi
 
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
--- local themes_path = "/usr/share/icons/Papirus-Dark"
+naughty = require("naughty")
 
 local theme = {}
 
