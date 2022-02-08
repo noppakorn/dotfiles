@@ -130,9 +130,6 @@ function zi() {
 #
 eval "$(zoxide init zsh)"
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-#[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 case "$TERM" in (rxvt|rxvt-*|st|st-*|*xterm*|(dt|k|E)term)
     local term_title () { print -n "\e]0;${(j: :q)@}\a" }
     precmd () {
