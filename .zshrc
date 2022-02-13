@@ -11,24 +11,23 @@ autoload -Uz compinit
 compinit
 
 eval "$(starship init zsh)"
-# source ~/Misc-Repo/powerlevel10k/powerlevel10k.zsh-theme
 
 # Alias
 alias ls="ls --color=auto"
 alias chulavpn="sudo openconnect --protocol=anyconnect vpn.chula.ac.th --user 6330258021"
 
-export PATH=~/.local/share/gem/ruby/3.0.0/bin:~/.local/bin/statusbar:~/.local/bin:$PATH
+export PATH=~/.local/bin:$PATH
 export EDITOR=nvim
 export VISUAL=nvim
 export QT_QPA_PLATFORMTHEME=qt5ct
-export WORKON_HOME=$HOME/.virtualenvs
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
-export npm_config_prefix="$HOME/.local"
 
+export WORKON_HOME=$HOME/.virtualenvs
 source /usr/bin/virtualenvwrapper.sh
+
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
