@@ -50,12 +50,14 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 -- Custom Config
 naughty.config.defaults['icon_size'] = 100
 awesome.set_preferred_icon_size(32)
+beautiful.notification_max_width = 500
 
 browser = "firefox"
 file_manager = "pcmanfm-qt"
 terminal = "alacritty"
 editor = "nvim"
 editor_cmd = terminal .. " -e " .. editor
+
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
