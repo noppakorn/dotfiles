@@ -5,7 +5,7 @@ SAVEHIST=10000
 bindkey -v
 KEYTIMEOUT=1
 
-zstyle :compinstall filename '/home/noppakorn/.zshrc'
+zstyle :compinstall filename '~/.zshrc'
 
 autoload -Uz compinit
 compinit
@@ -20,10 +20,11 @@ export PATH=~/.local/bin:$PATH
 export EDITOR=nvim
 export VISUAL=nvim
 export QT_QPA_PLATFORMTHEME=qt5ct
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
+
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
 
 export WORKON_HOME=$HOME/.virtualenvs
 source ~/.local/bin/virtualenvwrapper.sh
