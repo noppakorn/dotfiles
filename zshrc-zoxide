@@ -1,6 +1,7 @@
 HISTFILE=~/.histfile
 HISTSIZE=10000
 SAVEHIST=10000
+setopt HIST_IGNORE_SPACE
 
 bindkey -v
 KEYTIMEOUT=1
@@ -16,7 +17,8 @@ eval "$(starship init zsh)"
 alias ls="ls --color=auto"
 alias chulavpn="sudo openconnect --protocol=anyconnect vpn.chula.ac.th --user 6330258021"
 
-export PATH=~/.local/bin:$PATH
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
+export PATH=~/.cargo/bin:~/.local/bin:$PATH
 export EDITOR=nvim
 export VISUAL=nvim
 export QT_QPA_PLATFORMTHEME=qt5ct
@@ -24,6 +26,7 @@ export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 export WORKON_HOME=$HOME/.virtualenvs
 source ~/.local/bin/virtualenvwrapper.sh
@@ -142,3 +145,6 @@ function zi() {
 # To initialize zoxide, add this to your configuration (usually ~/.zshrc):
 #
 eval "$(zoxide init zsh)"
+
+# opam configuration
+[[ ! -r /home/noppakorn/.opam/opam-init/init.zsh ]] || source /home/noppakorn/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
