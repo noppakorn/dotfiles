@@ -215,8 +215,8 @@ awful.screen.connect_for_each_screen(function(s)
         ac_prefix = "🔌 ",
         battery_prefix = "🔋 ",
         percent_colors = {
-            { 20, "red"   },
-            { 30, "orange"},
+            { 10, "red"   },
+            { 20, "orange"},
             {999, "green" },
         },
         listen = true,
@@ -224,8 +224,8 @@ awful.screen.connect_for_each_screen(function(s)
         widget_text = "${AC_BAT}${color_on}${percent}%${color_off}",
         widget_font = "JetBrains Mono NL 13",
         tooltip_text = "Battery ${state}${time_est}\nCapacity: ${capacity_percent}%",
-        alert_threshold = 20,
-        alert_timeout = 5,
+        alert_threshold = 10,
+        alert_timeout = 10,
         alert_title = "Low battery!",
         alert_text = "${AC_BAT}${time_est}"
     }
@@ -322,6 +322,8 @@ globalkeys = gears.table.join(
               {description = "reload awesome", group = "awesome"}),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit,
               {description = "quit awesome", group = "awesome"}),
+    awful.key({ modkey, "Control"   }, "s", function () awful.spawn("systemctl suspend") end,
+              {description = "suspend", group = "awesome"}),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
               {description = "increase master width factor", group = "layout"}),
@@ -372,9 +374,13 @@ globalkeys = gears.table.join(
     --          {description = "show the menubar", group = "launcher"}),
     awful.key({ modkey },            "p",     function () awful.spawn("rofi -modi drun,run -show drun -theme Arc-Dark") end),
 
-    awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc(1) end),
-    awful.key({}, "XF86AudioLowerVolume", function() volume_widget:dec(1) end),
-    awful.key({}, "XF86AudioMute", function() volume_widget:toggle() end),
+    -- awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc(1) end),
+    -- awful.key({}, "XF86AudioLowerVolume", function() volume_widget:dec(1) end),
+    -- awful.key({}, "XF86AudioMute", function() volume_widget:toggle() end),
+
+    awful.key({}, "XF86AudioRaiseVolume", function() awful.spawn("pamixer -i 1",false) end),
+    awful.key({}, "XF86AudioLowerVolume", function() awful.spawn("pamixer -d 1",false) end),
+    awful.key({}, "XF86AudioMute", function() awful.spawn("pamixer -t",false) end),
     awful.key({}, "XF86AudioPause", function() awful.spawn("playerctl --all-players play-pause", false) end),
     awful.key({}, "XF86AudioPlay", function() awful.spawn("playerctl --all-players play-pause", false) end),
 
@@ -385,7 +391,6 @@ globalkeys = gears.table.join(
 
     awful.key({ modkey }, "u", function() awful.spawn("flameshot screen -c -p /home/noppakorn/Pictures/Screenshots", false) end),
     awful.key({ modkey, "Shift" }, "u", function() awful.spawn("/usr/bin/flameshot gui", false) end)
-
 )
 
 clientkeys = gears.table.join(
