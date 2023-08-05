@@ -630,7 +630,7 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 
 -- Autostart
-awful.spawn.with_shell("~/.config/autostart/autostart.sh", false)
+awful.spawn.with_shell("~/.config/autostart.sh", false)
 awful.spawn.with_shell("nm-applet", false)
 
 gears.timer {

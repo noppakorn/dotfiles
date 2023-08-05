@@ -9,9 +9,10 @@ return require('packer').startup(function()
   use 'tpope/vim-fugitive' -- Git
   use 'wincent/terminus' -- Better integration with terminal
   use 'preservim/nerdtree' -- File explorer
-  use 'sheerun/vim-polyglot'
+  -- use 'sheerun/vim-polyglot'
   use 'tpope/vim-sleuth' -- Infer tabstop and shiftwidth from file
   use 'ap/vim-css-color' -- Highlight Color hex
+  use 'nvim-treesitter/nvim-treesitter' -- syntax highlight
   use 'folke/tokyonight.nvim' -- Tokyo Night Theme
   use 'itchyny/lightline.vim' -- Bottombar
   use 'neovim/nvim-lspconfig' -- LSP Config

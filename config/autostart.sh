@@ -10,12 +10,13 @@ setxkbmap -model pc105 -layout us,th -option grp:win_space_toggle -option caps:e
 ## Lockscreen
 # Update betterlockscreen cache
 betterlockscreen -u ~/Pictures/beautiful-morning-minimal-4k-if.jpg --fx &
-xidlehook --not-when-fullscreen --not-when-audio --timer 830 "notify-send -u critical -t 10000 'LOCKING in 30s'" "" --timer 30 "systemctl suspend" "" &
+# xidlehook --not-when-fullscreen --not-when-audio --timer 830 "notify-send -u critical -t 10000 'LOCKING in 30s'" "" --timer 30 "systemctl suspend" "" &
+xautolock -corners "-000" -time 15 -notify 60 -notifier "notify-send -u critical -t 60000 'LOCKING in 60s'" -locker "systemctl suspend" &
 xss-lock --transfer-sleep-lock -- betterlockscreen -l &
 
 # Startup Programs
 lxqt-policykit-agent &
-picom --experimental-backends &
+picom &
 parcellite &
 flameshot &
 killall pasystray && pasystray &
