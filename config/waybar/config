@@ -5,7 +5,7 @@
 
     "modules-left": ["wlr/workspaces"],
     "modules-center": ["hyprland/window"],
-    "modules-right": ["idle_inhibitor", "pulseaudio", "keyboard-state", "battery", "hyprland/language", "clock", "tray"],
+    "modules-right": ["idle_inhibitor", "pulseaudio", "battery", "hyprland/language", "clock", "tray"],
 
     "wlr/workspaces": {
         "all-outputs": true,
@@ -25,7 +25,7 @@
         "on-click": "activate"
     },
     "hyprland/window": {
-        "max-length": 200,
+        "max-length": 80,
         "separate-outputs": true
     },
     "keyboard-state": {
@@ -76,6 +76,8 @@
     "clock": {
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": "{:%Y-%m-%d}",
+        "format": "{:%a %Y-%m-%d %H:%M}",
+        // "format": "{:%a %Y-%m-%d %H:%M:%S}",
         "interval": 1
     },
     "temperature": {
